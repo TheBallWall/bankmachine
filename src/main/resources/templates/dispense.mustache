@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Getting Started: Serving Web Content</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="info_after">
+    <h3>{{dispense}}</h3>
+    <h3>{{print}}</h3>
+</div>
+<div class="footer">
+    <form action="/main_page">
+        <input type="submit" name="return" value="Вернуться в меню">
+    </form>
+    <form action="/logout" method="post">
+        <input type="submit" name="leave" value="Вернуть карточку"/>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    </form>
+</div>
+</body>
+</html>

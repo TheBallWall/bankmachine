@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Главная страница</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="div_left">
+    <form action="/balance">
+        <input type="submit" value="Проверить баланс">
+    </form>
+
+
+    <form action="/transaction">
+        <input type="submit" value="Перевод средств">
+    </form>
+</div>
+<div class="div_right">
+    <form action="/withdraw">
+        <input type="submit" value="Снять средства">
+    </form>
+
+
+    <form action="/replenish">
+        <input type="submit" value="Пополнить баланс">
+    </form>
+</div>
+<div class="footer">
+    <form action="/logout" method="post">
+        <input type="submit" name="leave" value="Вернуть карточку"/>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    </form>
+</div>
+</body>
+</html>

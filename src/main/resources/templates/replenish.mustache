@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Getting Started: Serving Web Content</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="insert">
+    <h2>Укажите вносимые купюры:</h2>
+    <h4>Необходимо указать кол-во всех купюр (даже если их 0)</h4>
+    <form action="/replenish_res" method="get">
+        <input type="text" name="num" placeholder="100">
+        <input type="text" name="num" placeholder="200">
+        <input type="text" name="num" placeholder="500">
+        <input type="text" name="num" placeholder="1000">
+        <input type="text" name="num" placeholder="2000">
+        <input type="text" name="num" placeholder="5000">
+        <input type="submit" name="subm" value="Подтвердить">
+    </form>
+</div>
+
+<div class="footer">
+    <form action="/main_page">
+        <input type="submit" name="return" value="Вернуться в меню">
+    </form>
+    <form action="/logout" method="post">
+        <input type="submit" name="leave" value="Вернуть карточку"/>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    </form>
+</div>
+</body>
+</html>

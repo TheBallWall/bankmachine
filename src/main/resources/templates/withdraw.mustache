@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Getting Started: Serving Web Content</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="insert">
+    <h2>Введите сумму:</h2>
+    <h5>Сумма не должна превышать 40000 и должна быть кратна 100</h5>
+    <form action="/dispense" method="get">
+        <input type="text" name="sum">
+        <input type="submit" name="subm" value="Подтвердить">
+    </form>
+    <h5>Доступные купюры:</h5>
+    <div class="banknotes">
+        {{#banknotes}}
+            <p>{{.}}</p>
+        {{/banknotes}}
+    </div>
+</div>
+
+
+<div class="footer">
+    <form action="/main_page">
+        <input type="submit" name="return" value="Вернуться в меню">
+    </form>
+    <form action="/logout" method="post">
+        <input type="submit" name="leave" value="Вернуть карточку"/>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+input[type=submit] {
+    margin: auto;
+    background: #ccc;
+    border: 0 none;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height: 100px;
+    width: 300px;
+}
+
+input[name="leave"] {
+    background-color: #F71735;
+    margin: auto;
+    height: 40px;
+    width: 200px;
+}
+
+input[name="return"] {
+    background: #ccc;
+    margin: auto;
+    height: 40px;
+    width: 200px;
+}
+
+.div_left {
+    width: 50%;
+    float: left;
+    align-content: center;
+}
+
+.div_right {
+    width: 50%;
+    margin-left: 50%;
+    align-content: center;
+
+}
+
+.div_left form {
+    margin: auto;
+    padding-top: 50px;
+    height: 100px;
+    width: 300px;
+}
+
+.div_right form {
+    margin: auto;
+    padding-top: 50px;
+    height: 100px;
+    width: 300px;
+}
+
+.footer {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.footer form {
+    margin: auto;
+    width: 200px;
+    height: 40px;
+    margin-top: 10px;
+}
+
+.info {
+    width: 100%;
+    align-content: center;
+    text-align: center;
+}
+
+.info h2 {
+    margin-top: 30px;
+}
+
+.info {
+    width: 100%;
+    text-align: center;
+}
+
+.info h2 {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.info h1 {
+    text-align: center;
+}
+
+.insert {
+    width: 100%;
+    text-align: center;
+    align-content: center;
+}
+
+.insert form {
+    display: block;
+}
+
+.insert input {
+    height: 40px;
+    width: 200px;
+}
+
+.banknotes {
+    margin: auto;
+    align-content: center;
+}
+
+.banknotes p {
+    display: inline-block;
+    text-align: center;
+    border: 0 none;
+    background: #3ecc71;
+    padding: 2px;
+}
+
+.info_after {
+    margin: auto;
+    align-content: center;
+}
+
+.info_after h3 {
+    text-align: center;
+}
