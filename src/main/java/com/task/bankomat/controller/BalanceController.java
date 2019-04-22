@@ -7,10 +7,13 @@ import com.task.bankomat.repos.CardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.Map;
+
+//
+// Данный контроллер выводит баланс пользователя
+//
 
 @Controller
 public class BalanceController {
@@ -19,12 +22,13 @@ public class BalanceController {
     @Autowired
     private AccountRepo accountRepo;
 
+    // При переходе на данную страницу пользователь получит информацию о соём балансе
     @GetMapping("/balance")
-    public String greeting (Map<String, Object> model, Principal principal){
+    public String balance(Map<String, Object> model, Principal principal) {
 
-        Card card = cardRepo.findByNumber(principal.getName());
-        Account account = accountRepo.findById(card.getAccount_id());
-        model.put("balance", account.getAmount());
+        Card card = cardRepo.findByNumber(principal.getName()); // Получение информации из бд о карточке пользователя
+        Account account = accountRepo.findById(card.getAccount_id()); // Получение информации из бд об аккаунте пользователя
+        model.put("balance", account.getAmount()); // Передача значения для модели
         return "balance";
     }
 }

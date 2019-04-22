@@ -2,21 +2,29 @@ package com.task.bankomat.phisical;
 
 import java.io.IOException;
 
+//
+// Данный класс представляет собой физический объект: купюроприёмник
+//
+
 public class Acceptor {
     public static final Acceptor INSTANCE = new Acceptor();
 
-    private Acceptor() { }
+    private Acceptor() {
+    }
 
-    public void deposit(String val){
+    // Данный метод вызывается при внесении банкнот
+    public void deposit(String val) {
         updateStorage(val);
-        // имитация принятия банкнот
         chkMoney();
     }
-    private int chkMoney(){
-        //имитация проверки купюры
+
+    private int chkMoney() {
+        // Имитация проверки купюры
         return 1;
     }
-    private void updateStorage(String val){
+
+    // Данный метод обновляет значение хранимых купюр для конкретного номинала
+    private void updateStorage(String val) {
         Storage storage = Storage.INSTANCE;
         try {
             storage.update(val, true);
