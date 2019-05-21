@@ -41,13 +41,13 @@ public class TrnsctionResController {
         Account recipientAccount = accountRepo.findByNumber(strNum); // Получение аккаунта пользователя, получающего перевод
 
         // Проверка на существование счёта и его статуса
-        if (recipientAccount == null || recipientAccount.getStatus_id() != 1) {
+        if (recipientAccount == null || recipientAccount.getStatusId() != 1) {
             model.put("message", "Перевод на данный счёт невозможен");
             return "error_user";
         }
 
         Card card = cardRepo.findByNumber(principal.getName()); // Получение информации из бд о карточке пользователя
-        userAccount = accountRepo.findById(card.getAccount_id()); // Получение информации из бд об аккаунте пользователя
+        userAccount = accountRepo.findById(card.getAccountId()); // Получение информации из бд об аккаунте пользователя
 
         BigDecimal userMoney = new BigDecimal(userAccount.getAmount().toString()); // Запись текущего кол-ва денег пользователя
 

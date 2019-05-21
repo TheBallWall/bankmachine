@@ -12,13 +12,13 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
 
     private int id;
-    private int client_id;
+    private int clientId;
     private String number;
     private BigDecimal amount;
-    private int status_id;
+    private int statusId;
 
-    public int getStatus_id() {
-        return status_id;
+    public int getStatusId() {
+        return statusId;
     }
 
     public int getId() {
@@ -29,8 +29,8 @@ public class Account {
         this.amount = amount;
     }
 
-    public int getClient_id() {
-        return client_id;
+    public int getClientId() {
+        return clientId;
     }
 
     public String getNumber() {

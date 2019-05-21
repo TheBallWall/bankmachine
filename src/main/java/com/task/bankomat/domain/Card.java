@@ -10,7 +10,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.AUTO)
 
     private int id;
-    private int account_id;
+    private int accountId;
     private String number;
     private String backCode;
     private String pin;
@@ -20,8 +20,8 @@ public class Card {
         return id;
     }
 
-    public int getAccount_id() {
-        return account_id;
+    public int getAccountId() {
+        return accountId;
     }
 
     public String getNumber() {

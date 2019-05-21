@@ -45,7 +45,7 @@ public class DispenseController {
             return "error_user";
         }
         Card card = cardRepo.findByNumber(principal.getName()); // Получение информации из бд о карточке пользователя
-        userAccount = accountRepo.findById(card.getAccount_id()); // Получение информации из бд об аккаунте пользователя
+        userAccount = accountRepo.findById(card.getAccountId()); // Получение информации из бд об аккаунте пользователя
 
         BigDecimal userMoney = new BigDecimal(userAccount.getAmount().toString()); // Запись текущего кол-ва денег пользователя
 

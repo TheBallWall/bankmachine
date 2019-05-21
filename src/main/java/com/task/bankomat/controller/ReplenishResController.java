@@ -45,15 +45,16 @@ public class ReplenishResController {
         // Далее происходит замена значений в созданной карте на значения внесённых купюр, а также проверка на корректный ввод чисел
         for (Map.Entry<String, Integer> entry : currentLoad.entrySet()) {
             try {
+                if(Integer.parseInt(strSum[i]) < 0){throw new ArithmeticException();} // Проверка числа на отрицательность
                 currentLoad.replace(entry.getKey(), Integer.parseInt(strSum[i]));
                 i++;
             } catch (Exception e) {
-                model.put("message", "Необходимо ввести целое число");
+                model.put("message", "Необходимо ввести целое положительное число");
                 return "error_user";
             }
         }
         Card card = cardRepo.findByNumber(principal.getName()); // Получение информации из бд о карточке пользователя
-        userAccount = accountRepo.findById(card.getAccount_id()); // Получение информации из бд об аккаунте пользователя
+        userAccount = accountRepo.findById(card.getAccountId()); // Получение информации из бд об аккаунте пользователя
 
         // Вызов основной процедуры внесения средств
         procedure(currentLoad);

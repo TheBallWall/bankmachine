@@ -27,7 +27,7 @@ public class BalanceController {
     public String balance(Map<String, Object> model, Principal principal) {
 
         Card card = cardRepo.findByNumber(principal.getName()); // Получение информации из бд о карточке пользователя
-        Account account = accountRepo.findById(card.getAccount_id()); // Получение информации из бд об аккаунте пользователя
+        Account account = accountRepo.findById(card.getAccountId()); // Получение информации из бд об аккаунте пользователя
         model.put("balance", account.getAmount()); // Передача значения для модели
         return "balance";
     }
