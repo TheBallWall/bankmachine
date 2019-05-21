@@ -1,11 +1,9 @@
-package com.task.bankomat.phisical;
+package com.task.bankomat.physical;
 
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

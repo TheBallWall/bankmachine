@@ -1,7 +1,5 @@
 package com.task.bankomat;
 
-import com.task.bankomat.phisical.Dispenser;
-import com.task.bankomat.phisical.Storage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

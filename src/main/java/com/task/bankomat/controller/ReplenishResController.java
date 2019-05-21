@@ -2,9 +2,9 @@ package com.task.bankomat.controller;
 
 import com.task.bankomat.domain.Account;
 import com.task.bankomat.domain.Card;
-import com.task.bankomat.phisical.Acceptor;
-import com.task.bankomat.phisical.Printer;
-import com.task.bankomat.phisical.Storage;
+import com.task.bankomat.physical.Acceptor;
+import com.task.bankomat.physical.Printer;
+import com.task.bankomat.physical.Storage;
 import com.task.bankomat.repos.AccountRepo;
 import com.task.bankomat.repos.CardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public class ReplenishResController {
         return "replenish_res";
     }
 
-    // Данный мметод формирует цепочку загружаемых купюр
+    // Данный метод формирует цепочку загружаемых купюр
     private void procedure(HashMap<String, Integer> currentLoad) {
         ArrayList<String> chain = new ArrayList<>();
         int sum = 0;

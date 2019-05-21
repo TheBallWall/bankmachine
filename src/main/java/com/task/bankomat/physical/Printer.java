@@ -1,4 +1,4 @@
-package com.task.bankomat.phisical;
+package com.task.bankomat.physical;
 
 //
 // Данный класс представляет собой физический объект: принтер
