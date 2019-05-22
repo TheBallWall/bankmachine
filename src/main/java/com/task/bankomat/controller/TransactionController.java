@@ -10,7 +10,7 @@ import java.util.Map;
 //
 
 @Controller
-public class TrnsctionController {
+public class TransactionController {
     // При переходе на данную страницу пользователь сможет заполнить форму для перевода (transaction.mustache)
     @GetMapping("/transaction")
     public String trans(Map<String, Object> model) {

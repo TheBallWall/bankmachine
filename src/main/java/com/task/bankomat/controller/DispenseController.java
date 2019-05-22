@@ -2,6 +2,7 @@ package com.task.bankomat.controller;
 
 import com.task.bankomat.Response;
 import com.task.bankomat.service.OperationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ public class DispenseController {
 
     private final OperationService operationService; // Сервис для выполнения денежных операций пользователя
 
+    @Autowired
     public DispenseController(OperationService operationService) {
         this.operationService = operationService;
     }

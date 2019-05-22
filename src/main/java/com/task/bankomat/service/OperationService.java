@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 //
 // Сервис для выполнения денежных операций пользователя (выдача средств, пополнение счёта, перевод средств)
@@ -38,23 +36,23 @@ public class OperationService {
         this.accountRepo = accountRepo;
         this.storage = Storage.INSTANCE;
         this.dispenser = Dispenser.INSTANCE;
-        this.printer=Printer.INSTANCE;
-        this.acceptor=Acceptor.INSTANCE;
+        this.printer = Printer.INSTANCE;
+        this.acceptor = Acceptor.INSTANCE;
     }
 
     //
-    // Код, отвечающий за выполнение операции выдачи купюр
+    // Код, отвечающий за выполнение операции выдачи денежных средств
     //
 
     @Transactional
-    public Response dispenseOperation(String strSum, String name, Map<String, Object> model){
+    public Response dispenseOperation(String strSum, String name, Map<String, Object> model) {
         // Проверка на корректность вводимого значения
         int sum;
         try {
             sum = Integer.parseInt(strSum);
         } catch (Exception e) {
             model.put("message", "Необходимо ввести число"); // Сообщение об ошибке
-            return new Response(model,"error_user");
+            return new Response(model, "error_user");
         }
 
         Card card = cardRepo.findByNumber(name); // Получение информации из бд о карточке пользователя
@@ -65,7 +63,7 @@ public class OperationService {
         // Проверка запрашиваемой суммы и её обработка
         if (chkSum(sum, userMoney) == 0 || procedure(sum) == 0) {
             model.put("message", "Автомат не может выдать данную сумму"); // Сообщение об ошибке
-            return new Response(model,"error_user");
+            return new Response(model, "error_user");
         }
 
         // Пустой вызов принтера для имитации печати чека
@@ -73,7 +71,7 @@ public class OperationService {
         model.put("print", "Печать чека");
 
         model.put("dispense", "Деньги выданы"); // Вывод положительного результата выполнения операции
-        return new Response(model,"dispense");
+        return new Response(model, "dispense");
     }
 
     // Проверка суммы
@@ -153,12 +151,122 @@ public class OperationService {
     }
 
     //
-    // Код, отвечающий за выполнение операции внесения средств
+    // Код, отвечающий за выполнение операции внесения денежных средств
     //
 
     @Transactional
-    public Response replenishOperation(String strSum, String name, Map<String, Object> model){
-        return new Response(model,"");
+    public Response replenishOperation(String strSum[], String name, Map<String, Object> model) {
+        // Проверка на заполнение всех полей на странице имитирующей внесение средств (replenish_res.mustache)
+        if (Arrays.asList(strSum).contains("")) {
+            // Указаны не все купюры
+            model.put("message", "Пожалуйста, заполните все поля");
+            return new Response(model, "error_user");
+        }
+
+        LinkedHashMap<String, Integer> currentLoad = new LinkedHashMap<>(storage.getCurrency()); // Получение текущего состояния хранилища купюр банкомата
+        int i = 0;
+        // Далее происходит замена значений в созданной карте на значения внесённых купюр, а также проверка на корректный ввод чисел
+        for (Map.Entry<String, Integer> entry : currentLoad.entrySet()) {
+            try {
+                if (Integer.parseInt(strSum[i]) < 0) {
+                    throw new ArithmeticException();
+                } // Проверка числа на отрицательность
+                currentLoad.replace(entry.getKey(), Integer.parseInt(strSum[i])); // Обновлённое состояние хранилища
+                i++;
+            } catch (Exception e) {
+                model.put("message", "Необходимо ввести целое положительное число");
+                return new Response(model, "error_user");
+            }
+        }
+        Card card = cardRepo.findByNumber(name); // Получение информации из бд о карточке пользователя
+        account = accountRepo.findById(card.getAccountId()); // Получение информации из бд об аккаунте пользователя
+
+        // Вызов основной процедуры внесения средств
+        procedure(currentLoad);
+
+        // Пустой вызов принтера для имитации печати чека
+        printer.print();
+        model.put("print", "Печать чека");
+
+        model.put("repl", "Ваш счёт пополнен"); // Вывод положительного результата выполнения операции
+        return new Response(model, "replenish_res");
     }
 
+    // Данный метод формирует цепочку загружаемых купюр
+    private void procedure(HashMap<String, Integer> currentLoad) {
+        ArrayList<String> chain = new ArrayList<>();
+        int sum = 0;
+        for (Map.Entry<String, Integer> entry : currentLoad.entrySet()) {
+            for (int i = entry.getValue(); i > 0; i--) {
+                chain.add(entry.getKey());
+                sum += Integer.parseInt(entry.getKey());
+            }
+        }
+        loadMoney(chain, sum);
+    }
+
+    // Данный метод вызывает обновление хранилища купюр и обновление состояния баланса
+    private void loadMoney(ArrayList<String> chain, int sum) {
+        for (String i : chain) {
+            acceptor.deposit(i);
+        }
+        account.setAmount(account.getAmount().add(new BigDecimal(sum))); // Установка нового значения счёта клиента
+        accountRepo.save(account); // Сохраниение изменений
+    }
+
+
+    //
+    // Код, отвечающий за выполнение операции перевода денежных средств
+    //
+
+    @Transactional
+    public Response transactionOperation(String strNum, String strSum, String name, Map<String, Object> model) {
+
+
+        // Сперва происходит проверка суммы на соответсвие числовому значению
+        BigDecimal sum;
+        try {
+            sum = new BigDecimal(strSum);
+        } catch (Exception e) {
+            model.put("message", "Необходимо ввести число (например 100 или 300.25)");
+            return new Response(model, "error_user");
+        }
+        Account recipientAccount = accountRepo.findByNumber(strNum); // Получение аккаунта пользователя, получающего перевод
+
+        // Проверка на существование счёта и его статуса
+        if (recipientAccount == null || recipientAccount.getStatusId() != 1) {
+            model.put("message", "Перевод на данный счёт невозможен");
+            return new Response(model, "error_user");
+        }
+
+        Card card = cardRepo.findByNumber(name); // Получение информации из бд о карточке пользователя
+        account = accountRepo.findById(card.getAccountId()); // Получение информации из бд об аккаунте пользователя
+
+        BigDecimal userMoney = new BigDecimal(account.getAmount().toString()); // Запись текущего кол-ва денег пользователя
+
+        // Проверка суммы
+        if (userMoney.compareTo(sum) < 0) {
+            // Сумма больше, чем денег на счёте
+            model.put("message", "На счёте недостаточно средств");
+            return new Response(model, "error_user");
+        }
+        // Вызов основной операции перевода
+        procedure(recipientAccount, sum);
+
+        // Пустой вызов принтера для имитации печати чека
+        printer.print();
+        model.put("print", "Печать чека");
+
+        model.put("trans", "Перевод совершён"); // Вывод положительного результата выполнения операции
+
+        return new Response(model, "transaction_res");
+    }
+
+    // Данный метод реализует передачу средств
+    private void procedure(Account recipientAccount, BigDecimal sum) {
+        account.setAmount(account.getAmount().subtract(sum)); // Уменьшение баланса текущего клинта
+        recipientAccount.setAmount(recipientAccount.getAmount().add(sum)); // Увеличение баланса клиента-получателя
+        accountRepo.save(account); // Сохранение изменений
+        accountRepo.save(recipientAccount); // Сохранение изменений
+    }
 }

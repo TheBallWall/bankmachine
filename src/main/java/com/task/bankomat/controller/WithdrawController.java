@@ -1,6 +1,7 @@
 package com.task.bankomat.controller;
 
 import com.task.bankomat.service.StorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -15,6 +16,7 @@ public class WithdrawController {
 
     private final StorageService storageService; // Сервис для работы с хранилищем купюр
 
+    @Autowired
     public WithdrawController(StorageService storageService) {
         this.storageService = storageService;
     }
